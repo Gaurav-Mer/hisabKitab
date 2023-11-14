@@ -65,7 +65,7 @@ export default function Transaction({ open, handleClose, hisabDb, customer }) {
             customer_id: customer, cashbook_id: randomID(),
         }
         const error = validateData(cashbook);
-\        if (error && Object.keys(error)?.length < 1) {
+       if (error && Object.keys(error)?.length < 1) {
             const res = await hisabDb["cashbook"].add(cashbook);
             if (res) {
                 handleClose()
