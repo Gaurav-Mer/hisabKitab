@@ -1,0 +1,1 @@
+export const categoryList = [{ id: 1, name: "recharge" }, { id: 2, name: "cash send " }, { id: 3, name: "rent" }, { id: 4, name: "salary" }, { id: 5, name: "sale" }, , { id: 6, name: "Food" }]
