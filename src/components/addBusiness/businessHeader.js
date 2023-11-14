@@ -4,7 +4,6 @@ import { useContext, useState } from "react";
 import NewBusiness from "../dialog/newBusiness";
 import MainContext from "@/context/mainContext";
 import MyContext from "@/context/context";
-import { getKitabData } from "@/helpers/getDbData/indexDb";
 
 export default function BusinessHeader({ kitabList, hisabDb }) {
     const businessList = [{ name: "first" }, { name: 'second' }];

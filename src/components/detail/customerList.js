@@ -15,7 +15,8 @@ export default function CustomerList({ customerList, loading }) {
             </div>
             {loading ? <Loader /> : filterData?.length > 0 ?
                 <div style={{ display: 'flex', gap: 50, minWidth: 1900 }} >
-                    {filterData?.map((item, i) => {
+                    {filterData?.map((item, i
+                    ) => {
                         return (
                             <div key={i}>
                                 <SingleCustomer item={item} />
@@ -49,9 +50,9 @@ const Loader = () => {
     const a = [1, 2, 34, 4]
     return (
         <Grid container spacing={2}>
-            {a?.map((item) => {
+            {a?.map((item, i) => {
                 return (
-                    <Grid item xs={12} md={2}>
+                    <Grid key={i} item xs={12} md={2}>
                         <Skeleton height={150} />
                     </Grid>
                 )

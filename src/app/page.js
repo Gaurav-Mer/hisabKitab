@@ -8,7 +8,6 @@ import BusinessHeader from '@/components/addBusiness/businessHeader'
 import KitabListing from '@/partials/addKitab/kitabListing'
 import { useContext, useEffect, useState } from 'react'
 import MyContext from '@/context/context'
-import { getKitabData } from '@/helpers/getDbData/indexDb'
 import NewBusiness from '@/components/dialog/newBusiness';
 import BookIcon from '@mui/icons-material/Book';
 
@@ -83,9 +82,9 @@ const LoadingCom = () => {
   return (
     <>
       <Grid container spacing={2}>
-        {arr?.map((item) => {
+        {arr?.map((item,i) => {
           return (
-            <Grid item xs={12} md={3}>
+            <Grid key={i} item xs={12} md={3}>
               <Skeleton height={180} style={{ borderRadius: 10 }} />
             </Grid>
           )

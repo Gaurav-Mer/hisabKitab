@@ -40,9 +40,9 @@ export default function KitabListing({ kitabList, handleEdit, hisabDb, setKitabL
     }
     return (
         <Grid container spacing={2}  >
-            {kitabList && kitabList?.length > 0 ? kitabList?.map((item) => {
+            {kitabList && kitabList?.length > 0 ? kitabList?.map((item,i) => {
                 return (
-                    <Grid item xs={12} md={3}>
+                    <Grid item xs={12} md={3} key={i}> 
                         <SingleCard item={item} handleEdit={handleEdit} handleDelete={handleDelete} />
                     </Grid>
 

@@ -27,7 +27,9 @@ export default function CashbookList({ transtionList, loading }) {
                             <TableBody>
                                 {transtionList?.map((item, index) => {
                                     return (
-                                        <SigleBookList item={item} index={index} />
+                                        // <div key={index}>
+                                        <SigleBookList key={index} item={item} index={index} />
+                                        // </div>
                                     )
                                 })}
                             </TableBody>
@@ -42,11 +44,9 @@ export default function CashbookList({ transtionList, loading }) {
 
 
 const SigleBookList = ({ item, index }) => {
-    console.table(item)
     const bgWhite = index % 2 === 0
     return (
-
-        <TableRow style={{ background: bgWhite ? "white" : "" }}>
+        <TableRow key={index} style={{ background: bgWhite ? "white" : "" }}>
             <TableCell> {new Date(item?.createdAt).toLocaleDateString()} </TableCell>
             <TableCell align="center">{item?.type}</TableCell>
             <TableCell align="center">{item?.pType}</TableCell>
