@@ -1,5 +1,5 @@
 {
-  "name": "laindain",
+  "name": "hisabkitab",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,12 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-brands-svg-icons": "^6.4.2",
+    "@fortawesome/free-regular-svg-icons": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mui/icons-material": "^5.14.12",
+    "@mui/material": "^5.14.12",
+    "@mui/x-date-pickers": "^6.17.0",
+    "dexie": "^3.2.4",
+    "dexie-react-hooks": "^1.1.6",
+    "next": "13.5.4",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.0.2"
+    "sweetalert2": "^11.7.32"
   },
   "devDependencies": {
     "eslint": "^8",
-    "eslint-config-next": "14.0.2"
+    "eslint-config-next": "13.5.4"
   }
 }
