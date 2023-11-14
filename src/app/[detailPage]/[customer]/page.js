@@ -20,7 +20,6 @@ export default function Customer({ params }) {
     }
     const { detailPage, customer } = params;
     const router = useRouter();
-    console.log("router", router);
     const fetchCustomerDetail = async () => {
         const fetchData = await hisabDb.customer.where({ kitab_id: detailPage }).toArray()
         setCustomerList(fetchData);
@@ -48,7 +47,6 @@ export default function Customer({ params }) {
         const isCustomer = await hisabDb.customer.where({ customer_id: customer }).toArray();
         if (isCustomer?.length < 1) {
             //redirect 
-            console.log("redirect->");
             router.push("/")
         }
     }

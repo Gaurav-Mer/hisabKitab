@@ -19,7 +19,6 @@ export default function Transaction({ open, handleClose, hisabDb, customer }) {
     const [newTransaction, setNewTransaction] = useState({ type: "cash_in", amount: 0, transaction_id: "", pType: "online", date: "", attachment: "", desc: "", category: 1 });
 
     const handleChage = (e) => {
-        // console.log("e is =>", e.target.name, e.target.value)
         setNewTransaction((prev) => {
             let obj = { ...prev };
             obj[e.target.name] = e.target.value
@@ -34,8 +33,6 @@ export default function Transaction({ open, handleClose, hisabDb, customer }) {
             const reader = new FileReader();
             reader.onload = function (c) {
                 const base64String = c.target.result.split(',')[1]; // Extract the Base64 portion
-                console.log("base64String", base64String);
-                // console.log("reader is =>", reader.result)
                 const i = reader.result;
                 setNewTransaction((prev) => ({ ...prev, attachment: i }))
             }
@@ -68,8 +65,7 @@ export default function Transaction({ open, handleClose, hisabDb, customer }) {
             customer_id: customer, cashbook_id: randomID(),
         }
         const error = validateData(cashbook);
-        console.log("submit data i=>", error);
-        if (error && Object.keys(error)?.length < 1) {
+\        if (error && Object.keys(error)?.length < 1) {
             const res = await hisabDb["cashbook"].add(cashbook);
             if (res) {
                 handleClose()

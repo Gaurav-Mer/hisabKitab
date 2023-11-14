@@ -47,7 +47,6 @@ export default function Dashboard({ params }) {
         const isCustomer = await hisabDb.kitab.where({ kitab_id: detailPage }).toArray();
         if (isCustomer?.length < 1) {
             //redirect 
-            console.log("redirect->");
             router.push("/")
         }
     }

@@ -29,8 +29,6 @@ export default function ProfileDialog({ open, handleClose, hisabDb, customer, sr
 
     const submitData = async () => {
         const isAlready = await hisabDb["avatar"].toArray();
-
-        console.log("isAlready", isAlready);
         let data = "";
         if (Array.isArray(isAlready) && isAlready?.length > 0) {
             data = await hisabDb["avatar"].where({ img: isAlready[0]?.img }).modify({ img: image })
@@ -54,12 +52,9 @@ export default function ProfileDialog({ open, handleClose, hisabDb, customer, sr
 
     useEffect(() => {
         if (Array.isArray(src) && src?.length > 0) {
-            console.log("Image is =>", src);
             setImage(src[0]?.img);
         }
     }, [src]);
-
-    console.log("image", image);
 
     return (
         <Dialog maxWidth="sm" fullWidth={true} open={open} onClose={handleClose}>
