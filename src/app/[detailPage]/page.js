@@ -20,6 +20,7 @@ export default function Dashboard({ params }) {
     const handleClose = () => {
         setOpenDialog((prev) => !prev)
     }
+
     const { detailPage } = params;
     const fetchCustomerDetail = async () => {
         const fetchData = await hisabDb.customer.where({ kitab_id: detailPage }).toArray()
@@ -66,8 +67,8 @@ export default function Dashboard({ params }) {
                     </Link>
                     <KitabDashboard hisabDb={hisabDb} detailPage={detailPage} setCustomerList={setCustomerList} handleClose={handleClose} openDialog={openDialog} setOpenDialog={setOpenDialog} />
                 </Grid>
-                <Grid item xs={12} >
-                    <CustomerList loading={loading} customerList={customerList} />
+                <Grid item xs={12}>
+                    <CustomerList setCustomerList={setCustomerList} hisabDb={hisabDb} loading={loading} customerList={customerList} />
                 </Grid>
             </Grid>
         </>
