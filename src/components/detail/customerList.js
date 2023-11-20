@@ -60,7 +60,7 @@ export default function CustomerList({ customerList, loading, hisabDb, setCustom
                 <Typography style={{ color: 'grey', fontWeight: "bold", marginBottom: 10, display: 'flex', alignItems: 'center' }}><Groups3Icon style={{ marginRight: 5 }} /> Customer List</Typography>
             </div>
             {loading ? <Loader /> : filterData?.length > 0 ?
-                <div style={{ display: 'flex', gap: 50, minWidth: 1900 }} >
+                <div style={{ display: 'flex', gap: 10, flexWrap: "wrap" }} >
                     {filterData?.map((item, i
                     ) => {
                         return (
@@ -83,7 +83,7 @@ const SingleCustomer = ({ item, handleDelete, handleEdit }) => {
             <Link href={`/${item?.kitab_id}/${item?.customer_id}`} style={{ textDecoration: "none", color: "black" }}>
                 <div style={{
                     display: "flex", justifyContent
-                        : 'center', alignContent: 'center', boxSizing: 'border-box', padding: 20, minWidth: 200, borderRadius: 10, background: "#ead2ea", flexDirection: "column", gap: 10
+                        : 'center', alignContent: 'center', boxSizing: 'border-box', padding: 20, maxWidth: 170, borderRadius: 10, background: "#ead2ea", flexDirection: "column", gap: 10
                 }}>
                     <Typography className="line-clamp-1"
                         style={{ textDecoration: "none" }}>{item?.name}</Typography>

@@ -1,13 +1,45 @@
 // "use client"
 import { randomID } from "@/helpers/helper";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Groups3Icon from '@mui/icons-material/Groups3';
-import { Groups3, Login } from "@mui/icons-material";
+import { styled } from "@mui/material/styles";
 
 
-export default function AddCustomer({ open, handleClose, hisabDb, setCustomerList, kitab_id, isEdit = false, editData }) {
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    "& .MuiDialogContent-root": {
+        padding: theme.spacing(2),
+    },
+    "& .MuiDialogActions-root": {
+        padding: theme.spacing(1),
+    },
+    "& .MuiDialog-container": {
+        alignItems: "start",
+        marginTop: "30px",
+    },
+}));
+
+const BootstrapDialogTitle = (props) => {
+    const { children, onClose, ...other } = props;
+
+    return (
+        <DialogTitle  {...other}>
+            {children}
+            {onClose ? (
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                >
+                </IconButton>
+            ) : null}
+        </DialogTitle>
+    );
+};
+
+
+
+export default function AddCustomer({ matches, open, handleClose, hisabDb, setCustomerList, kitab_id, isEdit = false, editData }) {
     const [customerData, setCustomerData] = useState({ name: "", phone: "", email: "" });
     const [error, setError] = useState({});
 
@@ -31,8 +63,8 @@ export default function AddCustomer({ open, handleClose, hisabDb, setCustomerLis
                     setCustomerList(prev => {
                         let obj = [...prev];
                         let cIndex = obj.findIndex(data => data?.customer_id === editData?.customer_id);
-                        console.log("cINDex", cIndex,obj[cIndex]);
-                        if (cIndex>-1) {
+                        console.log("cINDex", cIndex, obj[cIndex]);
+                        if (cIndex > -1) {
                             obj[cIndex] = cData
                         }
                         return obj;
@@ -51,8 +83,7 @@ export default function AddCustomer({ open, handleClose, hisabDb, setCustomerLis
                 timer: 2500,
                 customClass: { container: "my-swal" }
             });
-            handleClose()
-
+            handleClose();
         }
 
     }
@@ -74,52 +105,77 @@ export default function AddCustomer({ open, handleClose, hisabDb, setCustomerLis
         }
     }, [isEdit, editData]);
     return (
-        <>
-            <Dialog maxWidth="sm" fullWidth={true} open={open} onClose={handleClose}>
-                <DialogTitle style={{ fontWeight: 'bold', fontSize: 22, textAlign: 'center', display: 'flex', alignItems: 'center' }}><Groups3Icon style={{ marginRight: 15 }} /> {isEdit ? "Edit Customer" : "Add new Customer"}</DialogTitle>
+        <div>
+            <BootstrapDialog
+                onClose={(_, reason) => {
+                    if (reason !== "backdropClick") {
+                        handleClose();
+                    }
+                }}
+                aria-labelledby="customized-dialog-title"
+                open={open}
+                disableScrollLock
+                // fullWidth={true}
+            maxWidth={"sm"}
+            >
+                {/* <DialogTitle style={{ fontWeight: 'bold', fontSize: 22, textAlign: 'center', display: 'flex', alignItems: 'center' }}><Groups3Icon style={{ marginRight: 15 }} /> {isEdit ? "Edit Customer" : "Add new Customer"}</DialogTitle> */}
+                <BootstrapDialogTitle
+                    id="customized-dialog-title"
+                    onClose={handleClose}
+                >
+                    Add Address
+                </BootstrapDialogTitle>
                 <DialogContent>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Customer name"
-                        type="text"
-                        fullWidth
-                        onChange={handleChange}
-                        value={customerData?.name}
-                        name="name"
-                        variant="standard"
-                    />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="email"
-                        label="Email"
-                        type="email"
-                        fullWidth
-                        onChange={handleChange}
-                        value={customerData?.email}
-                        name="email"
-                        variant="standard"
-                    />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="phone"
-                        label="Phone"
-                        type="number"
-                        fullWidth
-                        onChange={handleChange}
-                        value={customerData?.phone}
-                        name="phone"
-                        variant="standard"
-                    />
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="name"
+                                label="Customer name"
+                                type="text"
+                                fullWidth
+                                onChange={handleChange}
+                                value={customerData?.name}
+                                name="name"
+                                variant="standard"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="email"
+                                label="Email"
+                                type="email"
+                                fullWidth
+                                onChange={handleChange}
+                                value={customerData?.email}
+                                name="email"
+                                variant="standard"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="phone"
+                                label="Phone"
+                                type="number"
+                                fullWidth
+                                onChange={handleChange}
+                                value={customerData?.phone}
+                                name="phone"
+                                variant="standard"
+                            />
+                        </Grid>
+                    </Grid>
                 </DialogContent>
                 <DialogActions>
                     <Button color="error" onClick={handleClose}>Cancel</Button>
                     <Button startIcon={<Groups3Icon />} variant="contained" onClick={addNewKitab}>{isEdit ? "Edit Customer" : "Add Customer"} </Button>
                 </DialogActions>
-            </Dialog>
-        </>
+            </BootstrapDialog >
+        </div>
     )
 }
