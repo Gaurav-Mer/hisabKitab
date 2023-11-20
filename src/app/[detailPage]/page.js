@@ -67,7 +67,7 @@ export default function Dashboard({ params }) {
                     <KitabDashboard hisabDb={hisabDb} detailPage={detailPage} setCustomerList={setCustomerList} handleClose={handleClose} openDialog={openDialog} setOpenDialog={setOpenDialog} />
                 </Grid>
                 <Grid item xs={12} >
-                    <CustomerList loading={loading} customerList={customerList} />
+                    <CustomerList setCustomerList={setCustomerList} hisabDb={hisabDb} loading={loading} customerList={customerList} />
                 </Grid>
             </Grid>
         </>
