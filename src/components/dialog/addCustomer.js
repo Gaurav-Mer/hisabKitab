@@ -95,7 +95,6 @@ export default function AddCustomer({ matches, open, handleClose, hisabDb, setCu
                         setCustomerList(prev => {
                             let obj = [...prev];
                             let cIndex = obj.findIndex(data => data?.customer_id === editData?.customer_id);
-                            console.log("cINDex", cIndex, obj[cIndex]);
                             if (cIndex > -1) {
                                 obj[cIndex] = cData
                             }
