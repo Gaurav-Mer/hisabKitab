@@ -10,6 +10,7 @@ import { useContext, useEffect, useState } from 'react'
 import MyContext from '@/context/context'
 import NewBusiness from '@/components/dialog/newBusiness';
 import BookIcon from '@mui/icons-material/Book';
+import { useLiveQuery } from 'dexie-react-hooks'
 
 
 export default function Home() {
@@ -26,20 +27,27 @@ export default function Home() {
   }
 
 
-
-  const fetchDbData = async () => {
+  const transtionList = useLiveQuery(async () => {
     let x = await hisabDb.kitab.toArray();
     if (x && Array.isArray(x)) {
       setKitabList(x);
       setLoading(false);
     }
-  }
+  }, [hisabDb]);
 
-  useEffect(() => {
-    if (typeof window !== undefined && hisabDb) {
-      fetchDbData();
-    }
-  }, [hisabDb])
+  // const fetchDbData = async () => {
+  //   let x = await hisabDb.kitab.toArray();
+  //   if (x && Array.isArray(x)) {
+  //     setKitabList(x);
+  //     setLoading(false);
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   if (typeof window !== undefined && hisabDb) {
+  //     fetchDbData();
+  //   }
+  // }, [hisabDb])
 
   async function handleSearch(e) {
     let name = e.target.value;
@@ -59,7 +67,7 @@ export default function Home() {
         </Grid>
         <Grid item xs={12} style={{ margin: "0 10px" }}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography style={{ fontSize: 25, fontWeight: "bold", margin: "0px 10px 20px 10px" ,display:'flex',justifyContent:'center',alignItems:'center'}}><BookIcon style={{marginRight:5}} /> Kitab List</Typography>
+            <Typography style={{ fontSize: 25, fontWeight: "bold", margin: "0px 10px 20px 10px", display: 'flex', justifyContent: 'center', alignItems: 'center' }}><BookIcon style={{ marginRight: 5 }} /> Kitab List</Typography>
             <Button onClick={() => setHandleDialog(true)} style={{ width: 160, height: 50, color: "#4f2f80", fontWeight: "bold", fontSize: 16 }} variant="text" size="small">
               + Add kitab
             </Button>
@@ -82,7 +90,7 @@ const LoadingCom = () => {
   return (
     <>
       <Grid container spacing={2}>
-        {arr?.map((item,i) => {
+        {arr?.map((item, i) => {
           return (
             <Grid key={i} item xs={12} md={3}>
               <Skeleton height={180} style={{ borderRadius: 10 }} />

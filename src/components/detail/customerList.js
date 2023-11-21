@@ -12,6 +12,7 @@ export default function CustomerList({ customerList, loading, hisabDb, setCustom
     const [openDialog, setOpenDialog] = useState(false);
     const [editData, setEditData] = useState({})
     const filterData = filterVal ? customerList?.filter((data) => data?.name?.includes(filterVal)) : customerList;
+
     const handleDelete = (id) => {
         Swal.fire({
             title: "Are you sure?",
@@ -24,10 +25,10 @@ export default function CustomerList({ customerList, loading, hisabDb, setCustom
         }).then(async (result) => {
             if (result.isConfirmed) {
                 // delete all transaction related to this customer_id
-                const res = await hisabDb["cashbook"].where({ customer_id: id }).delete();
+                const res = await hisabDb["customer"].where("customer_id").equals(id).delete();
                 if (res) {
                     //deleting the kitab here :-
-                    const r = await hisabDb["customer"].where("customer_id").equals(id).delete();
+                    const r = await hisabDb["cashbook"].where({ customer_id: id }).delete();
                     if (r) {
                         await Swal.fire({
                             title: "Deleted!",

@@ -22,18 +22,21 @@ export default function Dashboard({ params }) {
     }
 
     const { detailPage } = params;
-    const fetchCustomerDetail = async () => {
+
+
+    const transtionList = useLiveQuery(async () => {
         const fetchData = await hisabDb.customer.where({ kitab_id: detailPage }).toArray()
         setCustomerList(fetchData);
         setLoading(false);
-    }
 
-    //fetching the list of customer:
-    useEffect(() => {
-        if (detailPage) {
-            fetchCustomerDetail();
-        }
     }, [detailPage]);
+
+    // //fetching the list of customer:
+    // useEffect(() => {
+    //     if (detailPage) {
+    //         fetchCustomerDetail();
+    //     }
+    // }, [detailPage]);
 
 
 
@@ -54,8 +57,7 @@ export default function Dashboard({ params }) {
     //validating that if there is no customer with customer id redirect it
     useEffect(() => {
         validateData();
-    }, [])
-
+    }, []);
 
     return (
         <>

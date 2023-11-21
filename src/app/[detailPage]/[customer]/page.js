@@ -58,7 +58,7 @@ export default function Customer({ params }) {
     return (
         <>
             <Navbar handleSearch={handleSearch} pageType={"cashbook"} />
-            <Grid container>
+            <Grid container spacing={2} p={2}>
                 <Grid item xs={12}>
                     <KitabDashboard customer={customer} type="customer" hisabDb={hisabDb} detailPage={detailPage} setCustomerList={setCustomerList} handleClose={handleClose} openDialog={openDialog} setOpenDialog={setOpenDialog} />
                 </Grid>
@@ -66,7 +66,7 @@ export default function Customer({ params }) {
                 <Grid item xs={12}>
                     <CustomerData hisabDb={hisabDb} customer={customer} detailPage={detailPage} />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} style={{paddingLeft:0,paddingRight:0}}>
                     <CashbookList loading={loading} transtionList={transtionList} />
                 </Grid>
             </Grid>

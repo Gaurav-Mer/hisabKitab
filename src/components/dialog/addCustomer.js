@@ -1,5 +1,5 @@
 // "use client"
-import { randomID } from "@/helpers/helper";
+import { randomID, validateEmail } from "@/helpers/helper";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -41,7 +41,35 @@ const BootstrapDialogTitle = (props) => {
 
 export default function AddCustomer({ matches, open, handleClose, hisabDb, setCustomerList, kitab_id, isEdit = false, editData }) {
     const [customerData, setCustomerData] = useState({ name: "", phone: "", email: "" });
-    const [error, setError] = useState({});
+    const [errorList, setErrorList] = useState({});
+
+    const validateData = (data) => {
+        let er = {};
+        if (!data?.name) {
+            er.name = "Kitab name can not be empty"
+        } else if (data?.name?.length < 3) {
+            er.name = "Minimum 3 length required"
+        } else if (data?.name?.length > 31) {
+            er.name = "Maximum 31 character allowed"
+        }
+
+        if (!data?.email) {
+            er.email = "Email name can not be empty"
+        } else if (!validateEmail(data?.email)) {
+            er.email = "Invalid email"
+        } else if (data?.name?.length > 31) {
+            er.name = "Maximum 31 character allowed"
+        }
+
+        if (!data?.phone) {
+            er.phone = "Phone Number can not be empty"
+        } else if (data?.phone?.toString()?.length !== 10) {
+            er.phone = "Number should have 10 digit"
+        }
+
+        return er
+    }
+
 
     const addNewKitab = async () => {
         const cData = {
@@ -53,37 +81,43 @@ export default function AddCustomer({ matches, open, handleClose, hisabDb, setCu
             customer_id: isEdit ? editData?.customer_id : randomID(),
             kitab_id: isEdit ? editData?.kitab_id : kitab_id
         }
-        let isAlready = await hisabDb["customer"].where("customer_id").equals(cData?.customer_id).toArray();
 
-        if (!isAlready || (isAlready && Array.isArray(isAlready) && isAlready?.length < 1) || isEdit) {
-            //addding the new kitab :- 
-            if (isEdit) {
-                const r = await hisabDb["customer"].where({ customer_id: editData?.customer_id }).modify(cData);
-                if (r) {
-                    setCustomerList(prev => {
-                        let obj = [...prev];
-                        let cIndex = obj.findIndex(data => data?.customer_id === editData?.customer_id);
-                        console.log("cINDex", cIndex, obj[cIndex]);
-                        if (cIndex > -1) {
-                            obj[cIndex] = cData
-                        }
-                        return obj;
-                    })
+        const error = validateData(cData);
+
+        if (Object.keys(error)?.length < 1) {
+            let isAlready = await hisabDb["customer"].where("customer_id").equals(cData?.customer_id).toArray();
+
+            if (!isAlready || (isAlready && Array.isArray(isAlready) && isAlready?.length < 1) || isEdit) {
+                //addding the new kitab :- 
+                if (isEdit) {
+                    const r = await hisabDb["customer"].where({ customer_id: editData?.customer_id }).modify(cData);
+                    if (r) {
+                        setCustomerList(prev => {
+                            let obj = [...prev];
+                            let cIndex = obj.findIndex(data => data?.customer_id === editData?.customer_id);
+                            if (cIndex > -1) {
+                                obj[cIndex] = cData
+                            }
+                            return obj;
+                        })
+                    }
+                } else {
+                    await hisabDb["customer"].add(cData);
+                    setCustomerList(prev => [cData, ...prev])
                 }
-            } else {
-                await hisabDb["customer"].add(cData);
-                setCustomerList(prev => [cData, ...prev])
-            }
 
-            Swal.fire({
-                icon: 'success',
-                title: 'Added successfully!',
-                text: 'New Kitab has been added successfully!',
-                showConfirmButton: false,
-                timer: 2500,
-                customClass: { container: "my-swal" }
-            });
-            handleClose();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Added successfully!',
+                    text: 'New Kitab has been added successfully!',
+                    showConfirmButton: false,
+                    timer: 2500,
+                    customClass: { container: "my-swal" }
+                });
+                handleClose();
+            }
+        } else {
+            setErrorList(error)
         }
 
     }
@@ -115,8 +149,7 @@ export default function AddCustomer({ matches, open, handleClose, hisabDb, setCu
                 aria-labelledby="customized-dialog-title"
                 open={open}
                 disableScrollLock
-                // fullWidth={true}
-            maxWidth={"sm"}
+                maxWidth={"sm"}
             >
                 {/* <DialogTitle style={{ fontWeight: 'bold', fontSize: 22, textAlign: 'center', display: 'flex', alignItems: 'center' }}><Groups3Icon style={{ marginRight: 15 }} /> {isEdit ? "Edit Customer" : "Add new Customer"}</DialogTitle> */}
                 <BootstrapDialogTitle
@@ -139,6 +172,8 @@ export default function AddCustomer({ matches, open, handleClose, hisabDb, setCu
                                 value={customerData?.name}
                                 name="name"
                                 variant="standard"
+                                error={errorList?.name}
+                                helperText={errorList?.name ?? ""}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -153,6 +188,8 @@ export default function AddCustomer({ matches, open, handleClose, hisabDb, setCu
                                 value={customerData?.email}
                                 name="email"
                                 variant="standard"
+                                error={errorList?.email}
+                                helperText={errorList?.email ?? ""}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -167,6 +204,8 @@ export default function AddCustomer({ matches, open, handleClose, hisabDb, setCu
                                 value={customerData?.phone}
                                 name="phone"
                                 variant="standard"
+                                error={errorList?.phone}
+                                helperText={errorList?.phone ?? ""}
                             />
                         </Grid>
                     </Grid>
