@@ -16,7 +16,8 @@ import { randomID } from "@/helpers/helper";
 export default function Transaction({ open, handleClose, hisabDb, customer }) {
     const [defaultBusiness, setDefaultBusiness] = useState("first");
     const [handleDialog, setHandleDialog] = useState(false);
-    const [newTransaction, setNewTransaction] = useState({ type: "cash_in", amount: 0, transaction_id: "", pType: "online", date: "", attachment: "", desc: "", category: 1 });
+    const [newTransaction, setNewTransaction] = useState({ type: "cash_in", amount: 0, transaction_id: "", pType: "online", date: "", attachment: "", desc: "", category: 0 });
+    const [errorList, setErrorList] = useState({});
 
     const handleChage = (e) => {
         setNewTransaction((prev) => {
@@ -51,9 +52,14 @@ export default function Transaction({ open, handleClose, hisabDb, customer }) {
         const errorList = {}
         if (!data?.amount) {
             errorList.amount = `Amount can not be empty`
-        } else if (!data?.date) {
+        } else if (data?.amount < 0) {
+            errorList.amount = `Enter valid amount`
+        }
+        if (!data?.date) {
             errorList.date = "Date cannot be empty"
-        } else if (!data?.category) {
+        }
+
+        if (!data?.category) {
             errorList.category = "Category cann't be empty"
         }
         return errorList
@@ -65,11 +71,15 @@ export default function Transaction({ open, handleClose, hisabDb, customer }) {
             customer_id: customer, cashbook_id: randomID(),
         }
         const error = validateData(cashbook);
-       if (error && Object.keys(error)?.length < 1) {
+
+        console.log("error", error);
+        if (error && Object.keys(error)?.length < 1) {
             const res = await hisabDb["cashbook"].add(cashbook);
             if (res) {
                 handleClose()
             }
+        } else {
+            setErrorList(error)
         }
     }
     return (
@@ -87,8 +97,13 @@ export default function Transaction({ open, handleClose, hisabDb, customer }) {
                         Cash Out
                     </MenuItem>
                 </TextField>
-                <TextField label="Enter amount" style={{ marginTop: 10 }} size="small" fullWidth name="amount" value={newTransaction?.amount} onChange={handleChage} />
-                <TextField label="Description" style={{ marginTop: 10 }} size="small" fullWidth minRows={2} multiline maxRows={4} name="desc" value={newTransaction?.desc} onChange={handleChage} />
+                <TextField type="number" error={errorList?.amount}
+                    helperText={errorList?.amount
+                        ?? ""}
+                    label="Enter amount" style={{ marginTop: 10 }} size="small" fullWidth name="amount" value={newTransaction?.amount} onChange={handleChage} />
+                <TextField error={errorList?.desc}
+                    helperText={errorList?.desc ?? ""}
+                    label="Description" style={{ marginTop: 10 }} size="small" fullWidth minRows={2} multiline maxRows={4} name="desc" value={newTransaction?.desc} onChange={handleChage} />
 
                 <TextField select label="Select Payment type" style={{ marginTop: 10 }} size="small" fullWidth name="pType" value={newTransaction?.pType} onChange={handleChage}>
                     <MenuItem value={"online"}>
@@ -102,6 +117,7 @@ export default function Transaction({ open, handleClose, hisabDb, customer }) {
                 <div style={{ marginTop: 10, border: "1px solid #d4cccc", padding: 10, borderRadius: 5 }}>
                     <label for="birthdaytime" style={{ color: 'grey', fontSize: 13 }}>Due Date :</label>
                     <input value={newTransaction?.date} name="date" onChange={handleChage} style={{ padding: 10, marginLeft: 10, border: 'none' }} type="datetime-local" id="birthdaytime" />
+                    {errorList?.date ? <span style={{ color: '#d32f2f', fontSize: 13 }}>{errorList?.date}</span> : ""}
                 </div>
 
                 <TextField
@@ -111,7 +127,9 @@ export default function Transaction({ open, handleClose, hisabDb, customer }) {
                     fullWidth
                     label="Category"
                     size="small"
-                    helperText="Please select category"
+                    helperText={errorList?.category ? errorList?.category : "Please select category"}
+                    error={errorList?.category}
+
                 >
                     {categoryList.map((option) => (
                         <MenuItem key={option.id} value={option.id}>

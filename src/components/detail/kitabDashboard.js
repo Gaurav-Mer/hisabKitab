@@ -50,7 +50,7 @@ export default function KitabDashboard({ openDialog, handleClose, setOpenDialog,
             <div style={{ marginTop: 10 }}>
                 {matches ?
                     <Dashb dasboardData={dasboardData} customer={customer} detailPage={detailPage} type={type} setCustomerList={setCustomerList} handleClose={handleClose} openDialog={openDialog} setOpenDialog={setOpenDialog} hisabDb={hisabDb} matches={matches} />
-                    : <MobileView setOpenDialog={setOpenDialog} type={type} />}
+                    : <MobileView dasboardData={dasboardData} customer={customer} setOpenDialog={setOpenDialog} type={type} />}
             </div>
             {openDialog ? !type ? <AddCustomer matches={matches} hisabDb={hisabDb} kitab_id={detailPage} open={openDialog} handleClose={handleClose} setCustomerList={setCustomerList} /> : type === "customer" ?
                 <Transaction customer={customer} hisabDb={hisabDb} open={openDialog} handleClose={handleClose} />
@@ -119,7 +119,7 @@ const Dashb = ({ handleClose, openDialog, setOpenDialog, setCustomerList, detail
 
 
 
-const MobileView = ({ setOpenDialog, type }) => {
+const MobileView = ({ setOpenDialog, type, customer, dasboardData }) => {
     return (
         <>
             <div style={{
@@ -137,13 +137,16 @@ const MobileView = ({ setOpenDialog, type }) => {
                     <Fab style={{ boxShadow: 'none', background: "#4f2f80", color: 'white' }} disableFocusRipple disableRipple aria-label="edit">
                         <PersonIcon />
                     </Fab>
-                    <Typography style={{ fontWeight: 'bold' }}>Customer</Typography>
+                    <Typography style={{ fontWeight: 'bold' }}>{customer ? "Transation" : "Customer"}</Typography>
+                    <Typography style={{ textAlign: 'center', fontWeight: 'bold', color: 'purple' ,fontSize:12}}>{dasboardData?.cCount}</Typography>
+
                 </div>
                 <div style={{ display: "flex", justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
                     <Fab style={{ boxShadow: 'none', background: "#4f2f80", color: 'white' }} disableFocusRipple disableRipple aria-label="edit">
                         <CreditCardIcon />
                     </Fab>
                     <Typography style={{ fontWeight: 'bold' }}>Cash In</Typography>
+                    <Typography style={{ textAlign: 'center', fontWeight: 'bold', color: 'purple',fontSize:12 }}>{priceFormat(dasboardData?.cashIn)}</Typography>
                 </div>
 
                 <div style={{ display: "flex", justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
@@ -151,6 +154,7 @@ const MobileView = ({ setOpenDialog, type }) => {
                         <MoveDownIcon />
                     </Fab>
                     <Typography style={{ fontWeight: 'bold' }}>Cash Out</Typography>
+                    <Typography style={{ textAlign: 'center', fontWeight: 'bold', color: 'purple' ,fontSize:12}}>{priceFormat(dasboardData?.cashOut)}</Typography>
                 </div>
 
                 <div style={{ display: "flex", justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
@@ -158,6 +162,7 @@ const MobileView = ({ setOpenDialog, type }) => {
                         <AccountBalanceWalletIcon />
                     </Fab>
                     <Typography style={{ fontWeight: 'bold' }}>Total</Typography>
+                    <Typography style={{ textAlign: 'center', fontWeight: 'bold', color: 'purple',fontSize:12 }}>{priceFormat(dasboardData?.total)}</Typography>
                 </div>
             </div>
         </>
