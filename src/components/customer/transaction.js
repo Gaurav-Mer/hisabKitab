@@ -59,7 +59,7 @@ export default function Transaction({ open, handleClose, hisabDb, customer }) {
             errorList.date = "Date cannot be empty"
         }
 
-        if (!data?.category) {
+        if (data?.category < 0) {
             errorList.category = "Category cann't be empty"
         }
         return errorList
@@ -89,7 +89,6 @@ export default function Transaction({ open, handleClose, hisabDb, customer }) {
             <DialogContent>
                 <TextField select label="Select Type" style={{ marginTop: 10 }} size="small" fullWidth name="type" value={newTransaction?.type} onChange={handleChage}
                 ><MenuItem value={"cash_in"}>
-
                         Cash In
                     </MenuItem>
                     <MenuItem value={"cash_out"}>
@@ -128,7 +127,9 @@ export default function Transaction({ open, handleClose, hisabDb, customer }) {
                     size="small"
                     helperText={errorList?.category ? errorList?.category : "Please select category"}
                     error={errorList?.category}
-
+                    onChange={handleChage}
+                    value={newTransaction?.category}
+                    name="category"
                 >
                     {categoryList.map((option) => (
                         <MenuItem key={option.id} value={option.id}>

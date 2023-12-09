@@ -1,5 +1,6 @@
 "use client"
 import { TableContainer, Typography, Table, TableBody, TableCell, TableHead, TableRow, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Grid, Skeleton } from "@mui/material";
+import { categoryList } from "../../../helpers/constant";
 
 export default function CashbookList({ transtionList, loading }) {
     return (
@@ -44,7 +45,8 @@ export default function CashbookList({ transtionList, loading }) {
 
 
 const SigleBookList = ({ item, index }) => {
-    const bgWhite = index % 2 === 0
+    const bgWhite = index % 2 === 0;
+    const cat = categoryList?.find(data => data?.id === parseInt(item?.category));
     return (
         <TableRow key={index} style={{ background: bgWhite ? "white" : "" }}>
             <TableCell> {new Date(item?.createdAt).toLocaleDateString()} </TableCell>
@@ -54,7 +56,7 @@ const SigleBookList = ({ item, index }) => {
             <TableCell align="center">{new Date(item?.date)?.toLocaleString()}</TableCell>
             <TableCell align="center">   {item?.attachment ? <img src={item?.attachment} width={40} /> : ""}</TableCell>
             <TableCell align="center">{item?.desc}</TableCell>
-            <TableCell align="center">{item?.category}</TableCell>
+            <TableCell align="center">{cat  && cat?.hasOwnProperty("name")? cat?.name : ""}</TableCell>
             <TableCell align="center" style={{ color: 'red', fontWeight: 'bold', cursor: 'pointer' }}>Delete </TableCell>
         </TableRow>
     )
