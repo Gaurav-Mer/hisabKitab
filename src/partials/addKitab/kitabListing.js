@@ -22,7 +22,8 @@ export default function KitabListing({ kitabList, handleEdit, hisabDb, setKitabL
                     await Swal.fire({
                         title: "Deleted!",
                         text: "Your kitab has been deleted.",
-                        icon: "success"
+                        icon: "success",
+                        
                     });
 
                     setKitabList((prev) => {
