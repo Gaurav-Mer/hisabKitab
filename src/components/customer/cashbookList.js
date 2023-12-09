@@ -1,8 +1,19 @@
 "use client"
 import { TableContainer, Typography, Table, TableBody, TableCell, TableHead, TableRow, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Grid, Skeleton } from "@mui/material";
 import { categoryList } from "../../../helpers/constant";
+import Swal from "sweetalert2";
 
-export default function CashbookList({ transtionList, loading }) {
+export default function CashbookList({ transtionList, loading, hisabDb }) {
+    const handleDelete = async (id) => {
+        const del = await hisabDb["cashbook"].where({ cashbook_id: id }).delete();
+        if (del) {
+            await Swal.fire({
+                title: "Deleted!",
+                text: "Transaction has been deleted.",
+                icon: "success"
+            });
+        }
+    }
     return (
         <Grid container spacing={2} p={2}>
             <Grid item xs={12}>
@@ -29,7 +40,7 @@ export default function CashbookList({ transtionList, loading }) {
                                 {transtionList?.map((item, index) => {
                                     return (
                                         // <div key={index}>
-                                        <SigleBookList key={index} item={item} index={index} />
+                                        <SigleBookList handleDelete={handleDelete} key={index} item={item} index={index} />
                                         // </div>
                                     )
                                 })}
@@ -44,7 +55,7 @@ export default function CashbookList({ transtionList, loading }) {
 }
 
 
-const SigleBookList = ({ item, index }) => {
+const SigleBookList = ({ item, index, handleDelete }) => {
     const bgWhite = index % 2 === 0;
     const cat = categoryList?.find(data => data?.id === parseInt(item?.category));
     return (
@@ -56,8 +67,8 @@ const SigleBookList = ({ item, index }) => {
             <TableCell align="center">{new Date(item?.date)?.toLocaleString()}</TableCell>
             <TableCell align="center">   {item?.attachment ? <img src={item?.attachment} width={40} /> : ""}</TableCell>
             <TableCell align="center">{item?.desc}</TableCell>
-            <TableCell align="center">{cat  && cat?.hasOwnProperty("name")? cat?.name : ""}</TableCell>
-            <TableCell align="center" style={{ color: 'red', fontWeight: 'bold', cursor: 'pointer' }}>Delete </TableCell>
+            <TableCell align="center">{cat && cat?.hasOwnProperty("name") ? cat?.name : ""}</TableCell>
+            <TableCell onClick={() => handleDelete(item?.cashbook_id)} align="center" style={{ color: 'red', fontWeight: 'bold', cursor: 'pointer' }}>Delete </TableCell>
         </TableRow>
     )
 }

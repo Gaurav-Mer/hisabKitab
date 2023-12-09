@@ -16,7 +16,7 @@ import { randomID } from "@/helpers/helper";
 export default function Transaction({ open, handleClose, hisabDb, customer }) {
     const [defaultBusiness, setDefaultBusiness] = useState("first");
     const [handleDialog, setHandleDialog] = useState(false);
-    const [newTransaction, setNewTransaction] = useState({ type: "cash_in", amount: 0, transaction_id: "", pType: "online", date: "", attachment: "", desc: "", category: 0 });
+    const [newTransaction, setNewTransaction] = useState({ type: "cash_in", amount: 0, transaction_id: "", pType: "online", date: "", attachment: "", desc: "", category: 1 });
     const [errorList, setErrorList] = useState({});
 
     const handleChage = (e) => {
@@ -59,7 +59,7 @@ export default function Transaction({ open, handleClose, hisabDb, customer }) {
             errorList.date = "Date cannot be empty"
         }
 
-        if (data?.category < 0) {
+        if (data?.category <= 0) {
             errorList.category = "Category cann't be empty"
         }
         return errorList

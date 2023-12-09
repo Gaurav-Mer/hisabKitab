@@ -66,8 +66,8 @@ export default function Customer({ params }) {
                 <Grid item xs={12}>
                     <CustomerData hisabDb={hisabDb} customer={customer} detailPage={detailPage} />
                 </Grid>
-                <Grid item xs={12} style={{paddingLeft:0,paddingRight:0}}>
-                    <CashbookList loading={loading} transtionList={transtionList} />
+                <Grid item xs={12} style={{ paddingLeft: 0, paddingRight: 0 }}>
+                    <CashbookList hisabDb={hisabDb} loading={loading} transtionList={transtionList} />
                 </Grid>
             </Grid>
         </>
